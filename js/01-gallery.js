@@ -28,23 +28,34 @@ const link = document.querySelectorAll(".gallery__link");
 let modal = {};
 
 const modalClose = (e) => {
+  console.log(e.code)
   if (e.code === "Escape") {
-    modal.close(() => window.removeEventListener("keydown", modalClose));
+    modal.close();
   }
 };
 
 link.forEach((l) => {
-  l.onclick = (e) => {
-    e.preventDefault();
-    const href = l.href;
-    const alt = l.querySelector("img").alt;
-    modal = basicLightbox.create(
-      `
-		<img width="1400" height="900" src="${href}" alt = "${alt}">
-	`
-    );
-
-    modal.show();
-    window.addEventListener("keydown", modalClose);
-  };
+  l.addEventListener('click', (e) => e.preventDefault())
 });
+
+gallery.onclick = (e) => {
+  if (e.target.nodeName !== 'IMG'){
+    return
+  }
+  const href = e.target.dataset.source
+
+  const alt = e.target.alt
+  modal = basicLightbox.create(
+    `
+		<img width="1400" height="900" src="${href}" alt = "${alt}">
+	`, {
+        onClose: (instance) => {window.removeEventListener("keydown", modalClose)}
+      }
+);
+
+  modal.show()
+
+  window.addEventListener("keydown", modalClose);
+}
+
+

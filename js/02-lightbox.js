@@ -31,7 +31,9 @@ let lightbox = new SimpleLightbox(".gallery .gallery__link", {
 });
 
 const onClickImg = (e) => {
-  e.preventDefault();
+  if (e.target.nodeName !== 'img'){
+    e.preventDefault();
+  }
 };
 
-links.forEach((link) => link.addEventListener("click", onClickImg));
+gallery.addEventListener("click", onClickImg)
